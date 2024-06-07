@@ -1,0 +1,61 @@
+/* manage-news.component.css */
+
+.news-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.news-item {
+    width: 300px;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.news-thumbnail img {
+    width: 100%;
+}
+
+.news-details {
+    padding: 10px;
+}
+
+.edit-btn,
+.delete-btn {
+    margin-top: 10px;
+}
+
+/* Bootstrap modal styles */
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    justify-content: space-between;
+    padding: 20px;
+}
+
+/* manage-news.component.css */
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

@@ -20,25 +20,25 @@ export class AdminNavComponent implements OnInit {
   isSuperAdmin: boolean = false;
   constructor(private router: Router, private participantService: ParticipantService, private pdf: ProjectService) { }
   ngOnInit(): void {
-    console.log(localStorage.getItem('role'));
-    if (typeof localStorage !== 'undefined') {
-      if (!(localStorage.getItem('role') === "ROLE_ADMIN" || localStorage.getItem('role') === "ROLE_ADMIN_SUPER")) {
-        window.location.href = "/";
-      }
-      if (localStorage.getItem('role') === "ROLE_ADMIN_SUPER") {
-        this.isSuperAdmin = true;
-      }
-      // Access localStorage here
+    // console.log(localStorage.getItem('role'));
+    // if (typeof localStorage !== 'undefined') {
+    if (!(sessionStorage.getItem('role') === "ROLE_ADMIN" || sessionStorage.getItem('role') === "ROLE_ADMIN_SUPER")) {
+      window.location.href = "/";
     }
+    if (sessionStorage.getItem('role') === "ROLE_ADMIN_SUPER") {
+      this.isSuperAdmin = true;
+    }
+    // Access localStorage here
+    // }
 
     this.participantService.getUserCount().subscribe(res => this.counter = res);
   }
 
 
   deleteStorage() {
-    localStorage.removeItem('username');
-    localStorage.removeItem('password');
-    localStorage.removeItem('role')
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('password');
+    sessionStorage.removeItem('role')
   }
 
   downloadPdf() {

@@ -4,13 +4,15 @@ import { RouterLink } from '@angular/router';
 import { Participant } from '../../participant';
 import { ParticipantService } from '../../participant.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import Swal from 'sweetalert2';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, FormsModule, CommonModule],
   templateUrl: './registration.component.html',
-  styleUrl: './registration.component.css'
+  styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent implements OnInit {
 
@@ -21,16 +23,42 @@ export class RegistrationComponent implements OnInit {
     contact: '',
     roles: ["Select Role"],
     enabled: false
-  }
+  };
+
+  loading: boolean = false;
 
   constructor(private particpentService: ParticipantService) { }
-  ngOnInit(): void {
-  }
+
+  ngOnInit(): void { }
+
   onSubmit() {
-    this.particpentService.addParticpent(this.particpiant).subscribe(response => alert("Data Added"), err => console.log(err)
+    this.loading = true; // Start loading
+    Swal.fire({
+      title: 'Please wait...',
+      text: 'Processing your registration',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
 
-
-    )
+    this.particpentService.addParticpent(this.particpiant).subscribe(
+      response => {
+        Swal.fire({
+          title: 'Good job!',
+          text: 'Participant Added',
+          icon: 'success'
+        });
+        this.loading = false; // Stop loading
+      },
+      error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.message,
+        });
+        this.loading = false; // Stop loading
+      }
+    );
   }
-
 }

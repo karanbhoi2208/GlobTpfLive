@@ -1,0 +1,46 @@
+<!-- manage-news.component.html -->
+<div class="news-list">
+    <div *ngFor="let singleNews of news" class="news-item">
+        <div class="news-thumbnail">
+            <img [src]="getImageUrl(singleNews.newsImage?.picByte)" alt="News Image">
+        </div>
+        <div class="news-details">
+            <h2>{{ singleNews.title }}</h2>
+            <p>{{ trimDescription(singleNews.description) }}</p>
+            <!-- <button (click)="openEditModal(singleNews)" class="edit-btn btn btn-primary">Edit</button> -->
+            <button (click)="deleteNews(singleNews)" class="delete-btn btn btn-danger">Delete</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="isLoading" class="loader"></div>
+<!-- Bootstrap Modal for Edit 
+<div class="modal fade" id="editNewsModal" tabindex="-1" aria-labelledby="editNewsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editNewsModalLabel">Edit News</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="saveEditedNews()" #editForm="ngForm">
+                    <div class="mb-3">
+                        <label for="editTitle" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="editTitle" name="editTitle"
+                            [(ngModel)]="selectedNews.title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="editDescription" name="editDescription"
+                            [(ngModel)]="selectedNews.description" required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>*/
+-->

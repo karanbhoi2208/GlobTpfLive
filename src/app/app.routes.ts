@@ -41,6 +41,10 @@ import { UploadVideoComponent } from './Admin/upload-video/upload-video.componen
 import { UploadNewsComponent } from './Admin/upload-news/upload-news.component';
 import { ShowVideoComponent } from './Admin/show-video/show-video.component';
 import { DisplayProjectComponent } from './Admin/display-project/display-project.component';
+import { ResetPasswordComponent } from './component/reset-password/reset-password.component';
+import { GalleryComponent } from './component/gallery/gallery.component';
+import { AnnualReportComponent } from './component/annual-report/annual-report.component';
+import { ManageNewsComponent } from './Admin/manage-news/manage-news.component';
 
 export const routes: Routes = [
     {
@@ -55,31 +59,28 @@ export const routes: Routes = [
             { path: "contact", component: ContactComponent },
             { path: "program", component: MainprogramComponent },
             { path: "news", component: NewsComponent },
-
-
             { path: "vission", component: VisionComponent },
             { path: "mission", component: MissionComponent },
             { path: "value", component: ValuesComponent },
             { path: "approach", component: ApproachComponent },
             { path: "team", component: TeamComponent },
             { path: "advisory", component: AdvisoryBoardComponent },
-
             { path: "login", component: LoginComponent },
             { path: "registration", component: RegistrationComponent },
-
             { path: "codingonwheel", component: CodingonwheelComponent },
             { path: "codingeducation", component: CodingeducationComponent },
             { path: "womenempowerment", component: WomenempowermentComponent },
-
             { path: "codingpage", component: CodingpageComponent },
             { path: "codingedu", component: CodeeduComponent },
-
+            { path: "reset", component: ResetPasswordComponent },
             { path: "campaign1", component: Campaign1Component },
             { path: "campaign2", component: Campaign2Component },
             { path: "campaign", component: CampaignComponent },
             { path: "campaign1of1", component: Campaign1to1Component },
             { path: "campaign2of2", component: Campaign2to1Component },
             { path: "courses1", component: CourserPBPBComponent },
+            { path: "gallary", component: GalleryComponent },
+            { path: "anual", component: AnnualReportComponent },
             { path: "women", component: WomenComponent }]
     },
     {
@@ -93,6 +94,7 @@ export const routes: Routes = [
             { path: 'uploadVideo', component: UploadVideoComponent },
             { path: 'uploadnews', component: UploadNewsComponent },
             { path: 'showvideo', component: ShowVideoComponent },
+            { path: 'manage-news', component: ManageNewsComponent },
             { path: 'displayproject', component: DisplayProjectComponent },
             { path: 'logout', component: HomeComponent },
         ]
