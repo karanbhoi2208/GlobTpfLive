@@ -45,4 +45,20 @@ export class NewsComponent implements OnInit {
     }
     return description;
   }
+
+
+  openModel(item: any | undefined) {
+    this.selectedNews = item;
+    const modelDiv = document.getElementById('news');
+    if (modelDiv != null) {
+      modelDiv.style.display = 'block';
+    }
+  }
+
+  closeModel() {
+    const modelDiv = document.getElementById('news');
+    if (modelDiv != null) {
+      modelDiv.style.display = 'none';
+    }
+  }
 }

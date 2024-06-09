@@ -36,6 +36,8 @@ export class UploadNewsComponent {
           // text: 'Project Added',
           icon: 'success'
         });
+        this.news.title = '';
+        this.news.description = '';
       },
         error => {
           Swal.fire({

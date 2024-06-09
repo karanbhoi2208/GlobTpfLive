@@ -75,7 +75,7 @@ export class LoginComponent {
 
         if (participant && participant.roles) {
           if (participant.roles.includes("ROLE_PARTICIPANT") && participant.enabled) {
-            this.router.navigate(['/participentMain']);
+            this.router.navigate(['/participant']);
           } else if (participant.roles.includes("ROLE_ADMIN") && participant.enabled) {
             this.router.navigate(['/admin']);
           } else if (participant.roles.includes("ROLE_ADMIN_SUPER") && participant.enabled) {

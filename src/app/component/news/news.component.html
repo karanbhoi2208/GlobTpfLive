@@ -12,6 +12,10 @@
                     <div class="p-4 text-center border border-5 border-light border-top-0">
                         <h4 class="mb-3">{{ newsItem.title }}</h4>
                         <p>{{ newsItem.description }}</p>
+                        <a class="btn mr-2" (click)="openModel(newsItem)">
+                            <i class="fas fa-link"></i> Read More
+                        </a>
+                        <a><i class="fab fa-calender"></i> {{newsItem.newsDate}}</a>
                     </div>
                 </div>
             </div>
@@ -19,3 +23,31 @@
     </div>
 </div>
 <!-- News End -->
+
+
+<div class="modal custom-modal" id="news">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                {{selectedNews?.title}}
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModel()"></button> -->
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body custom-modal-body">
+                <img [src]="getImageUrl(selectedNews?.newsImage?.picByte)" alt="Image" class="img-fluid">
+                <p>{{selectedNews?.description}}</p>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    (click)="closeModel()">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>

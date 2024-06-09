@@ -25,4 +25,8 @@ export class NewsService {
   deleteById(id: number): Observable<void> {
     return this.http.get<void>(`${this.baseUrl}/sec/deletebyid/${id}`);
   }
+
+  updateNews(news: News): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/sec/updatenews`, news);
+  }
 }

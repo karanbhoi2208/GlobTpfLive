@@ -45,4 +45,8 @@ export class ParticipantService {
     const body = { email, password };
     return this.http.post(`${this.baseUrl}/sec/forgotpassword`, body);
   }
+
+  updateBasicDetails(formdata: FormData): Observable<any> {
+    return this.http.post(`${this.baseUrl}/sec/updatebasicdetails`, formdata)
+  }
 }

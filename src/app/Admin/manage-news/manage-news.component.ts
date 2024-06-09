@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ManageNewsComponent implements OnInit {
   news: News[] = [];
+  editingNews: any = null;
   selectedNews: News = {
     title: '',
     description: ''
@@ -35,11 +36,20 @@ export class ManageNewsComponent implements OnInit {
         return resp.content;
       })
     ).subscribe((newsData: News[]) => {
+      // console.log(newsData);
       this.news = this.news.concat(newsData); // Concatenate fetched news to existing array
       this.isLoading = false; // Hide loader
-    }, () => {
-      this.isLoading = false; // Hide loader in case of error
+      // console.log(this.news);
     });
+    // this.newsService.getLatestNews().pipe(
+    //   map((resp: any) => {
+    //     return resp.content;
+    //   })
+    // ).subscribe((newsData: News[]) => {
+    //   this.news = this.news.concat(newsData); // Concatenate fetched news to existing array
+    // }, () => {
+    //   this.isLoading = false; // Hide loader in case of error
+    // });
   }
 
   getImageUrl(base64Data: string | undefined): string {
@@ -53,35 +63,32 @@ export class ManageNewsComponent implements OnInit {
     }
     return description;
   }
-  /*
-    openEditModal(news: News): void {
-      this.selectedNews = { ...news }; // Make a copy to prevent changing the original data directly
-      // Open the Bootstrap modal for editing
-      const editModal = new bootstrap.Modal(document.getElementById('editNewsModal')!);
-      editModal.show();
-    }
-  
-    saveEditedNews(): void {
-      // Save the edited news, you can implement this logic according to your service
-      // For now, let's just close the modal
-      this.closeEditModal();
-    }
-  
-    closeEditModal(): void {
-      // Close the Bootstrap modal for editing
-      const editModalElement = document.getElementById('editNewsModal')!;
-      const editModal = bootstrap.Modal.getInstance(editModalElement);
-      if (editModal) {
-        editModal.hide();
-      }
-    }
-  */
   deleteNews(news: News): void {
     if (news.id) {
       this.isLoading = true; // Show loader
       this.newsService.deleteById(news.id).subscribe(() => {
         this.isLoading = false; // Hide loader
         this.news = this.news.filter(item => item.id !== news.id); // Remove deleted news item from the list
+      });
+    }
+  }
+
+  openEditModal(item: any): void {
+    this.editingNews = { ...item };
+  }
+
+  closeEditModal(): void {
+    this.editingNews = null;
+  }
+
+  saveEditedNews(): void {
+    if (this.editingNews) {
+      this.newsService.updateNews(this.editingNews).subscribe(() => {
+        const index = this.news.findIndex(news => news.id === this.editingNews!.id);
+        if (index !== -1) {
+          this.news[index] = this.editingNews;
+        }
+        this.editingNews = null;
       });
     }
   }

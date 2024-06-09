@@ -45,6 +45,8 @@ import { ResetPasswordComponent } from './component/reset-password/reset-passwor
 import { GalleryComponent } from './component/gallery/gallery.component';
 import { AnnualReportComponent } from './component/annual-report/annual-report.component';
 import { ManageNewsComponent } from './Admin/manage-news/manage-news.component';
+import { ParticipantHomeComponent } from './participant/participant-home/participant-home.component';
+import { ParticipantBasicDetailsComponent } from './participant/participant-basic-details/participant-basic-details.component';
 
 export const routes: Routes = [
     {
@@ -97,6 +99,14 @@ export const routes: Routes = [
             { path: 'manage-news', component: ManageNewsComponent },
             { path: 'displayproject', component: DisplayProjectComponent },
             { path: 'logout', component: HomeComponent },
+        ]
+    },
+    {
+        path: 'participant', component: ParticipantHomeComponent,
+        children: [
+            { path: 'adminhome', component: ParticipantHomeComponent },
+            { path: 'participantdetails', component: ParticipantBasicDetailsComponent },
+
         ]
     },
 

@@ -1,3 +1,5 @@
+import { ParticipantImage } from "./participant-image";
+
 export interface Participant {
     id?: number;
     email: string,
@@ -5,5 +7,6 @@ export interface Participant {
     password: string,
     contact: string,
     roles: string[],
-    enabled: boolean// New property to track approval status
+    enabled: boolean,
+    particioentImage?: ParticipantImage
 }

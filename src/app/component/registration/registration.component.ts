@@ -46,7 +46,7 @@ export class RegistrationComponent implements OnInit {
       response => {
         Swal.fire({
           title: 'Good job!',
-          text: 'Participant Added',
+          text: 'Sign up done !',
           icon: 'success'
         });
         this.loading = false; // Stop loading
