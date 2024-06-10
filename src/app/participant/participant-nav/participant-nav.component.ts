@@ -16,6 +16,14 @@ export class ParticipantNavComponent implements OnInit {
   partImage: string | null = "https://www.gravatar.com/avatar/?d=mp";
   email: any;
   password: any;
+  participant: Participant = {
+    email: '',
+    name: '',
+    password: '',
+    contact: '',
+    roles: [],
+    enabled: false,
+  };
 
   constructor(private participantService: ParticipantService) { }
 
@@ -26,12 +34,24 @@ export class ParticipantNavComponent implements OnInit {
       window.location.href = "/";
     }
     this.participantService.getParticipantByEmailAndPassword(this.email, this.password).subscribe(
-      (participant: Participant) => { this.partName = participant.name });
+      (participant: Participant) => {
+        this.participant = participant
+        this.partName = participant.name;
+        if (this.participant.participentImage?.picByte) {
+          this.partImage = this.getImageUrl(this.participant.participentImage?.picByte);
+        }
+
+      });
+    console.log(this.partImage);
   }
 
   deleteStorage() {
     sessionStorage.removeItem('username');
     sessionStorage.removeItem('password');
     sessionStorage.removeItem('role')
+  }
+
+  getImageUrl(base64Data: string | undefined): string {
+    return base64Data ? `data:image/jpeg;base64,${base64Data}` : '';
   }
 }

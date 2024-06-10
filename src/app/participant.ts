@@ -1,4 +1,4 @@
-import { ParticipantImage } from "./participant-image";
+import { ParticipentImage } from "./participant-image";
 
 export interface Participant {
     id?: number;
@@ -8,5 +8,5 @@ export interface Participant {
     contact: string,
     roles: string[],
     enabled: boolean,
-    particioentImage?: ParticipantImage
+    participentImage?: ParticipentImage
 }
