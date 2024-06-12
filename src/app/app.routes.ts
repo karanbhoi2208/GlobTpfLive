@@ -47,6 +47,9 @@ import { AnnualReportComponent } from './component/annual-report/annual-report.c
 import { ManageNewsComponent } from './Admin/manage-news/manage-news.component';
 import { ParticipantHomeComponent } from './participant/participant-home/participant-home.component';
 import { ParticipantBasicDetailsComponent } from './participant/participant-basic-details/participant-basic-details.component';
+import { CustomeProgramComponent } from './component/custome-program/custome-program.component';
+import { FullProgramComponent } from './component/full-program/full-program.component';
+import { AddProjectGallaryComponent } from './Admin/add-project-gallary/add-project-gallary.component';
 
 export const routes: Routes = [
     {
@@ -83,6 +86,8 @@ export const routes: Routes = [
             { path: "courses1", component: CourserPBPBComponent },
             { path: "gallary", component: GalleryComponent },
             { path: "anual", component: AnnualReportComponent },
+            { path: "custome", component: CustomeProgramComponent },
+            { path: "details", component: FullProgramComponent },
             { path: "women", component: WomenComponent }]
     },
     {
@@ -98,6 +103,7 @@ export const routes: Routes = [
             { path: 'showvideo', component: ShowVideoComponent },
             { path: 'manage-news', component: ManageNewsComponent },
             { path: 'displayproject', component: DisplayProjectComponent },
+            { path: 'addprojectgallary', component: AddProjectGallaryComponent },
             { path: 'logout', component: HomeComponent },
         ]
     },

@@ -53,4 +53,20 @@ export class ProjectService {
     const body = { id };
     return this.http.post<any>(api, body);
   }
+
+  getDetail(title: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/sec/getproject`, title)
+  }
+
+  uploadImages(formdata: FormData): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/sec/uploadimages`, formdata)
+
+  }
+  updateProjectImages(formdata: FormData): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/sec/updateImages`, formdata)
+
+  }
+  loadById(title: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/sec/loadbytitle`, title)
+  }
 }

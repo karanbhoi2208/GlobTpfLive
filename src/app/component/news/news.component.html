@@ -11,10 +11,18 @@
                     </div>
                     <div class="p-4 text-center border border-5 border-light border-top-0">
                         <h4 class="mb-3">{{ newsItem.title }}</h4>
-                        <p>{{ newsItem.description }}</p>
+                        <!-- <p>{{ newsItem.description }}</p> -->
                         <a class="btn mr-2" (click)="openModel(newsItem)">
-                            <i class="fas fa-link"></i> Read More
+                            <!-- <i class="fas fa-link"></i> Read More -->
+
                         </a>
+
+                        <details>
+                            <summary>Read More</summary>
+                            <p>
+                                {{newsItem.description}}
+                            </p>
+                        </details>
                         <a><i class="fab fa-calender"></i> {{newsItem.newsDate}}</a>
                     </div>
                 </div>

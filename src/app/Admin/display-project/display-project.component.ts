@@ -10,6 +10,8 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
+declare var bootstrap: any;
+
 @Component({
   selector: 'app-display-project',
   standalone: true,
@@ -26,7 +28,8 @@ export class DisplayProjectComponent implements OnInit {
   pageSize: number = 10;
   pageSizeOptions: number[] = [5, 10, 25, 100];
   isLoading: boolean = true; // Add isLoading property
-
+  selectedProject: Project | null = null; // To keep track of the project being updated
+  images: File[] = []; // To store selected images for upload
 
   constructor(private projectservices: ProjectService, private sanitizer: DomSanitizer, private router: Router) { }
 
@@ -35,7 +38,7 @@ export class DisplayProjectComponent implements OnInit {
       map((projects: Project[]) => projects.map((project: Project) => this.createImage(project)))
     ).subscribe(response => {
       this.project = response.map(project => {
-        this.isLoading = false
+        this.isLoading = false;
         return project;
       });
       this.setPaginatedProjects();
@@ -93,18 +96,11 @@ export class DisplayProjectComponent implements OnInit {
   }
 
   createImage(project: Project): Project {
-    if (project.projectImage) {
-      const imageFile: any = project.projectImage;
-      const imgBlob = this.dataUrlToBlob(imageFile.picByte, imageFile.type);
-      const img = new File([imgBlob], imageFile.name, { type: imageFile.type });
-      const finalImg: Filehandle = {
-        file: img,
-        url: this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(img))
-      };
-      project.projectImage = finalImg;
-    }
-    project.id = project.id;
     return project;
+  }
+
+  getImageUrl(base64Data: string | undefined): string {
+    return `data:image/jpeg;base64,${base64Data}`;
   }
 
   dataUrlToBlob(picByte: any, imageType: any) {
@@ -118,18 +114,68 @@ export class DisplayProjectComponent implements OnInit {
     return blob;
   }
 
-  openModel(imageUrl: SafeUrl) {
+  openModel(imageUrl: any) {
     const modelDiv = document.getElementById('myModal');
     if (modelDiv != null) {
       modelDiv.style.display = 'block';
     }
-    this.modalImageUrl = imageUrl;
+    this.modalImageUrl = this.getImageUrl(imageUrl);
   }
 
   closeModel() {
     const modelDiv = document.getElementById('myModal');
     if (modelDiv != null) {
       modelDiv.style.display = 'none';
+    }
+  }
+
+  openImageUpload(proj: Project) {
+    this.selectedProject = proj;
+    const modalElement = document.getElementById('imageUploadModal');
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  }
+
+  onImageSelected(event: any) {
+    if (event.target.files && event.target.files.length) {
+      this.images = Array.from(event.target.files);
+    }
+  }
+
+  updateProjectImages() {
+    if (this.selectedProject) {
+      const formData = new FormData();
+      if (this.selectedProject.id) {
+        formData.append('id', this.selectedProject.id.toString())
+      }
+      for (let i = 0; i < this.images.length; i++) {
+        formData.append('image', this.images[i]);
+      }
+      this.projectservices.updateProjectImages(formData).subscribe(
+        response => {
+          console.log('Images updated successfully', response);
+          Swal.fire({
+            title: 'Good job!',
+            text: 'Images Updated',
+            icon: 'success'
+          });
+          const modalElement = document.getElementById('imageUploadModal');
+          if (modalElement) {
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            modal.hide();
+          }
+        },
+        error => {
+          console.error('Error updating images', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: error.message
+          });
+        }
+      );
     }
   }
 }
