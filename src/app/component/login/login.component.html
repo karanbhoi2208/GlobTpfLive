@@ -1,6 +1,6 @@
 <div class="container-xxl py-5 login-box text-center">
     <h1 class="display-3 animated slideInDown">Login</h1>
-    <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+    <form #loginForm="ngForm" method="post" (ngSubmit)="onSubmit()">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" name="username" [(ngModel)]="email" required>
         <label for="password">Password:</label>

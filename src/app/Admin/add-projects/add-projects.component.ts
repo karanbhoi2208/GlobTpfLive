@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { Project } from '../../project';
 import { ProjectService } from '../../project.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Filehandle } from '../../filehandle';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { title } from 'process';
 
 @Component({
   selector: 'app-add-projects',
@@ -22,11 +22,33 @@ export class AddProjectsComponent {
     description: '',
     projectDetails: {
       startingDate: '',
-      endingDate: ''
-    }
+      endingDate: '',
+      benifit: ['']
+    },
+    work: []
   };
+  images: File[] = [];
+  imagePreviews: string[] = [];
 
-  selectedImageFile: File | null = null;
+  addBenefit(): void {
+    this.project.projectDetails.benifit.push('');
+  }
+
+  removeBenefit(index: number): void {
+    this.project.projectDetails.benifit.splice(index, 1);
+  }
+
+  addWork(): void {
+    this.project.work?.push({ title: '', description: '' });
+  }
+
+  removeWork(index: number): void {
+    this.project.work?.splice(index, 1);
+  }
+
+  trackByIndex(index: number, obj: any): any {
+    return index;
+  }
 
   constructor(private projectService: ProjectService, private sanitizer: DomSanitizer) { }
 
@@ -42,13 +64,17 @@ export class AddProjectsComponent {
   }
 
   onSubmit(form: NgForm) {
-    if (form.invalid) {
+    if (form.invalid || this.images.length < 2) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please fill out all fields and upload at least two images.',
+      });
       return;
     }
 
     this.loading = true; // Start loading
 
-    // Check if starting and ending dates are not less than current date
     const currentDate = new Date();
     const startingDate = new Date(this.project.projectDetails.startingDate);
     const endingDate = new Date(this.project.projectDetails.endingDate);
@@ -63,7 +89,6 @@ export class AddProjectsComponent {
       return; // Stop form submission
     }
 
-    // Check if required fields contain text
     if (!this.project.title.trim() || !this.project.description.trim()) {
       Swal.fire({
         icon: 'error',
@@ -81,7 +106,8 @@ export class AddProjectsComponent {
         Swal.fire({
           title: 'Good job!',
           text: 'Project Added',
-          icon: 'success'
+          icon: 'success',
+          allowOutsideClick: false,
         });
         this.loading = false; // Stop loading
       },
@@ -101,25 +127,26 @@ export class AddProjectsComponent {
     formData.append('project', new Blob([JSON.stringify(project)], { type: 'application/json' }));
     formData.append('projectdetail', new Blob([JSON.stringify(project.projectDetails)], { type: 'application/json' }));
 
-    if (project.projectImage) {
-      formData.append('image', project.projectImage.file, project.projectImage.file.name);
+    for (let i = 0; i < this.images.length; i++) {
+      formData.append('image', this.images[i]);
     }
-
     return formData;
   }
 
   onImageSelected(event: any) {
-    if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-      const url = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
+    if (event.target.files && event.target.files.length) {
+      const files = event.target.files;
+      this.images = []; // Clear existing images
+      this.imagePreviews = []; // Clear existing previews
 
-      const fileHandle: Filehandle = {
-        file: file,
-        url: url
-      };
-
-      this.selectedImageFile = fileHandle.file;
-      this.project.projectImage = fileHandle;
+      for (let i = 0; i < files.length; i++) {
+        this.images.push(files[i]);
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.imagePreviews.push(reader.result as string);
+        };
+        reader.readAsDataURL(files[i]);
+      }
     }
   }
 }

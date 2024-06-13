@@ -6,6 +6,7 @@ import { AdminUsersComponent } from '../admin-users/admin-users.component';
 import { AdminAllParticipantComponent } from '../admin-all-participant/admin-all-participant.component';
 import { ParticipantService } from '../../participant.service';
 import { ProjectService } from '../../project.service';
+import { Participant } from '../../participant';
 
 @Component({
   selector: 'app-admin-nav',
@@ -18,27 +19,30 @@ import { ProjectService } from '../../project.service';
 export class AdminNavComponent implements OnInit {
   counter: number = 0;
   isSuperAdmin: boolean = false;
+  email: any;
+  password: any = sessionStorage.getItem('password');
+  adminName: string = "John Doe";
+  adminImage: string | null = "https://www.gravatar.com/avatar/?d=mp";
   constructor(private router: Router, private participantService: ParticipantService, private pdf: ProjectService) { }
   ngOnInit(): void {
-    console.log(localStorage.getItem('role'));
-    if (typeof localStorage !== 'undefined') {
-      if (!(localStorage.getItem('role') === "ROLE_ADMIN" || localStorage.getItem('role') === "ROLE_ADMIN_SUPER")) {
-        window.location.href = "/";
-      }
-      if (localStorage.getItem('role') === "ROLE_ADMIN_SUPER") {
-        this.isSuperAdmin = true;
-      }
-      // Access localStorage here
+    this.email = sessionStorage.getItem('username');
+    this.password = sessionStorage.getItem('password');
+    if (!(sessionStorage.getItem('role') === "ROLE_ADMIN" || sessionStorage.getItem('role') === "ROLE_ADMIN_SUPER")) {
+      window.location.href = "/";
     }
-
+    if (sessionStorage.getItem('role') === "ROLE_ADMIN_SUPER") {
+      this.isSuperAdmin = true;
+    }
+    this.participantService.getParticipantByEmailAndPassword(this.email, this.password).subscribe(
+      (participant: Participant) => { this.adminName = participant.name });
     this.participantService.getUserCount().subscribe(res => this.counter = res);
   }
 
 
   deleteStorage() {
-    localStorage.removeItem('username');
-    localStorage.removeItem('password');
-    localStorage.removeItem('role')
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('password');
+    sessionStorage.removeItem('role')
   }
 
   downloadPdf() {

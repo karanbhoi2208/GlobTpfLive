@@ -4,11 +4,15 @@ import { Participant } from '../../participant';
 import { FormsModule } from '@angular/forms';
 import { ParticipantService } from '../../participant.service';
 import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
+import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, FormsModule, CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -51,31 +55,49 @@ export class LoginComponent {
   }
 
   constructor(private services: ParticipantService, private router: Router) { }
-
   onSubmit() {
-    // this.services.getParticpent().subscribe()
+    Swal.fire({
+      title: 'Logging in...',
+      text: 'Please wait while we log you in.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+
     this.services.getParticipantByEmailAndPassword(this.email, this.password).subscribe(
       (participant: Participant) => {
-        localStorage.setItem('username', participant.email);
-        localStorage.setItem('password', this.password);
-        localStorage.setItem('role', participant.roles.toString())
+        Swal.close();
+        sessionStorage.setItem('username', participant.email);
+        sessionStorage.setItem('password', this.password);
+        sessionStorage.setItem('role', participant.roles.toString());
+        sessionStorage.setItem('enabled', JSON.stringify(participant.enabled));
 
-        // this.interceptor.setCredentials(this.email, this.password);
-        // console.log(participant.roles.toString());
-        console.log(participant.enabled);
-
-        if (participant && participant.roles && participant.roles.includes("ROLE_PARTICIPANT") && participant.enabled) {
-          this.router.navigate(['/participentMain']);
-        } else if (participant && participant.roles && participant.roles.includes("ROLE_ADMIN") && participant.enabled) {
-          this.router.navigate(['/admin']);
-        } else if (participant && participant.roles && participant.roles.includes("ROLE_ADMIN_SUPER") && participant.enabled) {
-          this.router.navigate(['/admin']);
+        if (participant && participant.roles) {
+          if (participant.roles.includes("ROLE_PARTICIPANT") && participant.enabled) {
+            this.router.navigate(['/participant']);
+          } else if (participant.roles.includes("ROLE_ADMIN") && participant.enabled) {
+            this.router.navigate(['/admin']);
+          } else if (participant.roles.includes("ROLE_ADMIN_SUPER") && participant.enabled) {
+            this.router.navigate(['/admin']);
+          } else {
+            // Redirect to default route if no matching role or enabled status
+            window.location.reload(); // Change '/default' to your default route
+          }
         } else {
-          window.location.href = "/"
-          // Handle case when participant is null or roles are not as expected
-          console.error('Participant or roles not as expected:', participant.roles, participant.enabled);
+          // Redirect to default route if participant or roles are null
+          this.router.navigate(['/default']); // Change '/default' to your default route
+          console.error('Participant or roles not as expected:', participant);
         }
+      },
+      (error: HttpErrorResponse) => {
+        Swal.close();
+        Swal.fire({
+          title: 'Login Failed',
+          text: error.message,
+          icon: 'error'
+        });
       }
-    )
+    );
   }
 }

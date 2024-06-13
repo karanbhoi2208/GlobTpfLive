@@ -8,48 +8,65 @@ import { Project } from './project';
 })
 export class ProjectService {
 
+  private baseUrl = 'http://localhost:8086';
+
   constructor(private http: HttpClient) { }
 
   addProject(formdata: FormData): Observable<any> {
-    const api = "https://lucid-fulfillment-production.up.railway.app/sec/addprojects";
+    const api = `${this.baseUrl}/sec/addprojects`;
     return this.http.post(api, formdata);
   }
 
   getAllProjects(): Observable<Project[]> {
-    const api = "https://lucid-fulfillment-production.up.railway.app/sec/getAllProjects";
+    const api = `${this.baseUrl}/sec/getAllProjects`;
     return this.http.get<Project[]>(api);
   }
 
   deleteById(project: Project): Observable<any> {
-    const api = `https://lucid-fulfillment-production.up.railway.app/sec/deletebyid`;
-    const id = project.id
-    const body = id
-
-    return this.http.post(api, body);
+    const api = `${this.baseUrl}/sec/deletebyid`;
+    const id = project.id;
+    return this.http.post(api, id);
   }
+
   getPdf(): Observable<Blob> {
-    const api = "https://lucid-fulfillment-production.up.railway.app/api/v2/getPdf";
+    const api = `${this.baseUrl}/api/v2/getPdf`;
     return this.http.get(api, { responseType: 'blob' });
   }
 
   updateData(proj: Project): Observable<any> {
-    const api = "https://lucid-fulfillment-production.up.railway.app/sec/update";
-    return this.http.post(api, proj)
+    const api = `${this.baseUrl}/sec/update`;
+    return this.http.post(api, proj);
   }
 
   uploadFile(video: FormData): Observable<any> {
-    return this.http.post("https://lucid-fulfillment-production.up.railway.app/sec/uploadvideo", video);
+    const api = `${this.baseUrl}/sec/uploadvideo`;
+    return this.http.post(api, video);
   }
 
-  private apiUrl = 'https://lucid-fulfillment-production.up.railway.app/sec/showvideo';
-
   getVideos(): Observable<any> {
-    return this.http.get<any>(this.apiUrl);
+    const api = `${this.baseUrl}/sec/showvideo`;
+    return this.http.get<any>(api);
   }
 
   deleteVideo(id: number): Observable<any> {
-    const apiUrl = 'https://lucid-fulfillment-production.up.railway.app/sec/deletevideo';
-    const body = { id }
-    return this.http.post<any>(apiUrl, body);
+    const api = `${this.baseUrl}/sec/deletevideo`;
+    const body = { id };
+    return this.http.post<any>(api, body);
+  }
+
+  getDetail(title: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/sec/getproject`, title)
+  }
+
+  uploadImages(formdata: FormData): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/sec/uploadimages`, formdata)
+
+  }
+  updateProjectImages(formdata: FormData): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/sec/updateImages`, formdata)
+
+  }
+  loadById(title: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/sec/loadbytitle`, title)
   }
 }
