@@ -25,8 +25,7 @@ export class FullProgramComponent implements OnInit {
       endingDate: '',
       benifit: []
     },
-    // Initialize projectImage to avoid errors
-
+    work: []
   }
   title: string | null = ''
 

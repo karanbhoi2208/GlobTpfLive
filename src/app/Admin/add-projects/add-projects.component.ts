@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { title } from 'process';
 
 @Component({
   selector: 'app-add-projects',
@@ -23,7 +24,8 @@ export class AddProjectsComponent {
       startingDate: '',
       endingDate: '',
       benifit: ['']
-    }
+    },
+    work: []
   };
   images: File[] = [];
   imagePreviews: string[] = [];
@@ -34,6 +36,14 @@ export class AddProjectsComponent {
 
   removeBenefit(index: number): void {
     this.project.projectDetails.benifit.splice(index, 1);
+  }
+
+  addWork(): void {
+    this.project.work?.push({ title: '', description: '' });
+  }
+
+  removeWork(index: number): void {
+    this.project.work?.splice(index, 1);
   }
 
   trackByIndex(index: number, obj: any): any {

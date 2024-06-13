@@ -46,7 +46,7 @@ export class CustomeProgramComponent implements OnInit {
 
 
   getAdjustedIndex(index: number): number {
-    return index + 3;
+    return index;
   }
 
   getImageUrl(base64Data: string | undefined): string {
